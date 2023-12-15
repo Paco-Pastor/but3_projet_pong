@@ -1,18 +1,12 @@
 import pygame
 
 
-class PaddleSprite:
-    def __init__(self):
-        self.default = None
-        self.large = None
-
-    def set_default(self, path):
-        self.default = pygame.image.load(path)
-
-    def set_large(self, path):
-        self.large = pygame.image.load(path)
+# PaddleSprite implements an object that stores the images used for a skin
+class PaddleSkin:
+    def __init__(self, default, large):
+        self.default = pygame.image.load(default)
+        self.large = pygame.image.load(large)
 
 
-DEFAULT = PaddleSprite()
-DEFAULT.set_default("./img/default_paddle.png")
-DEFAULT.set_large("./img/large_paddle.png")
+# PaddleSkin Constant
+DEFAULT_PADDLE_SKIN = PaddleSkin("./img/default_paddle.png", "./img/large_paddle.png")
