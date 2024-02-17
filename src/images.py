@@ -10,3 +10,4 @@ class PaddleSkin:
 
 # PaddleSkin Constant
 DEFAULT_PADDLE_SKIN = PaddleSkin("./img/default_paddle.png", "./img/large_paddle.png")
+DEFAULT_BALL = pygame.image.load("./img/default_ball.png")
