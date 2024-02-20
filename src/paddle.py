@@ -1,5 +1,5 @@
 import pygame
-import images as img
+import src.images as img
 
 
 # Paddle implements a Pong's paddle usable with pygame

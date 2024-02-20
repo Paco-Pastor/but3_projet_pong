@@ -1,8 +1,10 @@
 import math
+import os
 import random
+import sys
 
 import pygame
-import images as img
+import src.images as img
 
 def does_collide(p1, p2):
     test_p1_x = p1.left > p2.left and p1.left < p2.right
@@ -56,7 +58,8 @@ class Ball:
             self.invalid_x  = False
             for i in self.collides_object:
                 self.invalid_x = self.invalid_x or does_collide(self.ball, i())
-
+            if self.x + self.radius <= 0 or self.x-self.radius >= self.screen.get_width():
+                sys.exit()
             if (self.invalid_x and not self.update_x) or (self.invalid_y and not self.update_y) :
 
                 if self.invalid_y:

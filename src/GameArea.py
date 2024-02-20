@@ -1,7 +1,7 @@
 import pygame, sys
 
-from ball import Ball
-from paddle import Paddle
+from src.ball import Ball
+from src.paddle import Paddle
 
 
 # GameArea is the object which manage the game session.
