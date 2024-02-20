@@ -1,11 +1,12 @@
 import pygame_menu
-from game.startgame import start_the_game
+from src.game import start
+import pygame
 
 #création du menu
 fontmenu = pygame_menu.font.FONT_8BIT
 
 imagemenu = pygame_menu.baseimage.BaseImage(
-    image_path="ressources/images/background.jpg",
+    image_path="assets/background.jpg",
     drawing_mode=pygame_menu.baseimage.IMAGE_MODE_FILL
 )
 
@@ -20,9 +21,11 @@ menutheme = pygame_menu.Theme(
 
 
 #fonction du menu
-def start_menu(width, height,screen):
+def start_menu(width, height):
+    pygame.init()
+    screen = pygame.display.set_mode((width, height))
     menu = pygame_menu.Menu('Pong eternal', width, height,theme=menutheme)
     menu.add.selector('Mode :', [('1 joueur', 1), ('2 joueurs', 2)])
-    menu.add.button('Jouer', start_the_game)
+    menu.add.button('Jouer', start)
     menu.add.button('Quitter', pygame_menu.events.EXIT)
     menu.mainloop(screen)
