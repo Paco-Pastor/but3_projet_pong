@@ -1,6 +1,5 @@
 import math
 import random
-import sys
 
 import pygame
 import src.images as img

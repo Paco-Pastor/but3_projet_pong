@@ -1,6 +1,3 @@
-from tkinter import EventType
-
-
 class Event:
     # extra : true if it's on the left side, false if it's on the right side
     BALL_OUT = 'Ball Out'
