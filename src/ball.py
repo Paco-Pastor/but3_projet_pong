@@ -6,6 +6,14 @@ import sys
 import pygame
 import src.images as img
 
+from src.score import Score
+#import score_player1,score_player2 from game
+#from game import score_player1,score_player2
+
+#from src.game import score_player1, score_player2
+score_player1 = Score()
+score_player2 = Score()
+
 def does_collide(p1, p2):
     test_p1_x = p1.left > p2.left and p1.left < p2.right
     test_p1_y = p1.top > p2.top and p1.top < p2.bottom
@@ -47,6 +55,8 @@ class Ball:
     def start(self):
         self.direction = self.orientation
 
+    
+
     def move(self):
         if self.direction is not None:
             self.x = self.x + self.speed * math.cos(Ball.radian(self.direction))
@@ -58,8 +68,20 @@ class Ball:
             self.invalid_x  = False
             for i in self.collides_object:
                 self.invalid_x = self.invalid_x or does_collide(self.ball, i())
-            if self.x + self.radius <= 0 or self.x-self.radius >= self.screen.get_width():
-                sys.exit()
+            if self.x + self.radius <= 0 :
+                #self.score_player2.update()
+                print("joueur 2 a gagné")
+                score_player2.update()
+                print(score_player2)
+                return()
+                #sys.exit()
+            if self.x-self.radius >= self.screen.get_width():
+                #self.score_player1.update()
+                print("joueur 1 a gagné")
+                score_player1.update()
+                print(score_player1)
+                return
+                #sys.exit()
             if (self.invalid_x and not self.update_x) or (self.invalid_y and not self.update_y) :
 
                 if self.invalid_y:

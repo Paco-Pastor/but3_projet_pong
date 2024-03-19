@@ -4,6 +4,7 @@ from src.ball import Ball
 from src.paddle import Paddle
 
 
+
 # GameArea is the object which manage the game session.
 class GameArea:
     def __init__(self, screen, clock, FPS):

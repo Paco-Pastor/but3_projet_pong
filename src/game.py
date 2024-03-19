@@ -1,7 +1,9 @@
 import pygame
-
+from src.score import Score
 from src.GameArea import GameArea
 
+score_player1 = Score()
+score_player2 = Score()
 
 def start():
     pygame.init()
@@ -14,6 +16,8 @@ def start():
     pygame.display.set_caption("Pong")
 
     game = GameArea(screen, clock, FPS)
+
+    
 
     while True:
         game.execute_once()
