@@ -26,6 +26,7 @@ def start_menu(width, height):
     screen = pygame.display.set_mode((width, height))
     menu = pygame_menu.Menu('Pong eternal', width, height,theme=menutheme)
     menu.add.selector('Mode :', [('1 joueur', 1), ('2 joueurs', 2)])
+    menu.add.selector('Graphisme :', [('faible', 1), ('moyen', 2), ('haut', 3), ('Photo realiste', 4)],default=1)
     menu.add.button('Jouer', start)
     menu.add.button('Quitter', pygame_menu.events.EXIT)
     menu.mainloop(screen)
