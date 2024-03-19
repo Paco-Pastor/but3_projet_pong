@@ -1,5 +1,3 @@
-import pygame
-
 from unittest import TestCase, mock, main
 from src.ball import Ball
 
