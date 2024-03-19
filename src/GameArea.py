@@ -8,10 +8,12 @@ from src.paddle import Paddle
 # GameArea is the object which manage the game session.
 class GameArea:
     def __init__(self, screen, clock, FPS):
+       
         # -- Store given values
         self.clock = clock
         self.FPS = FPS
         self.screen = screen
+
 
         # -- Create subsurfaces
         self.border_rect = None
@@ -121,9 +123,25 @@ class GameArea:
         self.border_area.fill((255, 255, 255))
         self.game_area.fill((0, 0, 0))
 
+        self.draw_score_player1()
+        self.draw_score_player2()
         self.paddle.display()
         self.opponent_paddle.display()
         self.ball.rotate()
         self.ball.move()
         self.ball.display()
         pygame.display.update()
+    
+    def draw_score_player1(self):
+        font = pygame.font.Font(None, 64)
+        WHITE = (255, 255, 255)
+        score_text = font.render("Score: " + str(self.score[0]), True, WHITE)
+        self.screen.blit(score_text, (10, 10))
+        
+
+    def draw_score_player2(self):
+        font = pygame.font.Font(None, 64)
+        WHITE = (255, 255, 255)
+        score_text = font.render("Score: " + str(self.score[1]), True, WHITE)
+        self.screen.blit(score_text, (1, 1))
+
