@@ -21,6 +21,7 @@ menutheme = pygame_menu.Theme(
 
 scoremax = None
 
+# Création de la classe pour récupérer la valeur du score max choisi par le joueur
 class MenuHandler:
     def __init__(self):
         self.scoremax = ('5', 1)
