@@ -1,10 +1,10 @@
 import math
-import os
 import random
-import sys
 
 import pygame
 import src.images as img
+from src.event import Event
+
 
 def does_collide(p1, p2):
     test_p1_x = p1.left > p2.left and p1.left < p2.right
@@ -27,6 +27,7 @@ class Ball:
         self.y = y
         self.radius = radius
 
+        self.moving = False
         # -- Sprite relatives data
         self.sprite = image
         self.orientation = orientation
@@ -39,35 +40,39 @@ class Ball:
         self.speed = 2
         self.collides_object = collides_object
 
+        self.event = []
+
     def update_image(self):
         rotated_image = pygame.transform.rotate(self.sprite, self.orientation)
         scaled_image = pygame.transform.scale_by(rotated_image, self.radius / (self.sprite.get_width()//2))
         self.image = scaled_image
 
     def start(self):
-        self.direction = self.orientation
+        if not self.moving:
+            self.direction = self.orientation
+            self.moving = True
 
     def move(self):
-        if self.direction is not None:
+        if self.moving:
             self.x = self.x + self.speed * math.cos(Ball.radian(self.direction))
             self.y = self.y + self.speed * math.sin(Ball.radian(self.direction))
 
             monte = self.direction > 180
             droite = self.direction < 90 or self.direction > 270
             self.invalid_y = self.y - self.radius <= 0 or self.y + self.radius > self.screen.get_height()
-            self.invalid_x  = False
+            self.invalid_x = False
             for i in self.collides_object:
                 self.invalid_x = self.invalid_x or does_collide(self.ball, i())
             if self.x + self.radius <= 0 or self.x-self.radius >= self.screen.get_width():
-                sys.exit()
+                self.moving = False
+                event = Event(Event.BALL_OUT, (self.x + self.radius <= 0))
+                self.event.append(event)
             if (self.invalid_x and not self.update_x) or (self.invalid_y and not self.update_y) :
-
                 if self.invalid_y:
                     monte = not monte
                     self.direction = (360-(self.direction+90))%360
                 if self.invalid_x:
                     self.speed = min(self.speed*1.05, 5)
-                    print(self.speed)
                     droite = not droite
                     self.direction = (360-(self.direction-90))%360
 
@@ -104,3 +109,8 @@ class Ball:
         if direction == None:
             direction = self.orientation
         pygame.draw.line(self.screen, (255,255,0), (self.x, self.y), (self.x + 50*math.cos(Ball.radian(direction)), self.y + 50*math.sin(Ball.radian(direction))))
+
+    def read_event(self):
+        events = self.event[:]
+        self.event.clear()
+        return events
