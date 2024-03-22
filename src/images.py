@@ -1,7 +1,7 @@
 import pygame
 
 
-# PaddleSprite implements an object that stores the images used for a skin
+# Skin de la balle et des paddles
 class PaddleSkin:
     def __init__(self, default, large):
         self.default = pygame.image.load(default)

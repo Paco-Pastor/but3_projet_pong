@@ -1,5 +1,5 @@
 class Event:
-    # extra : true if it's on the left side, false if it's on the right side
+    # True si la balle sort par la gauche, false si elle sort par la droite
     BALL_OUT = 'Ball Out'
     def __init__(self, event_type, extra=None):
         ok = False
