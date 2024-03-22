@@ -69,4 +69,5 @@ class Paddle:
 
     # Afficher la raquette à l'écran
     def display(self):
+        self.screen.fill( (255,0,0),pygame.Rect(self.x, self.y, self.width, self.height))
         self.paddle = self.screen.blit(self.image, pygame.Rect(self.x, self.y, self.width, self.height))
