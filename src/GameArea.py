@@ -133,15 +133,15 @@ class GameArea:
         pygame.display.update()
     
     def draw_score_player1(self):
-        font = pygame.font.Font(None, 64)
+        font = pygame.font.Font(None, 32)
         WHITE = (255, 255, 255)
         score_text = font.render("Score: " + str(self.score[0]), True, WHITE)
-        self.screen.blit(score_text, (10, 10))
+        self.screen.blit(score_text, (10, 5))
         
 
     def draw_score_player2(self):
-        font = pygame.font.Font(None, 64)
+        font = pygame.font.Font(None, 32)
         WHITE = (255, 255, 255)
         score_text = font.render("Score: " + str(self.score[1]), True, WHITE)
-        self.screen.blit(score_text, (1, 1))
+        self.screen.blit(score_text, (self.screen.get_width() - 100 , 5))
 
