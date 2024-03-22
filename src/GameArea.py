@@ -47,11 +47,11 @@ class GameArea:
         self.opponent_paddle = Paddle(self.game_area, x=self.game_area.get_width() - self.paddle.width, left_side=False)
 
         self.ball = Ball(self.game_area, x=self.game_area.get_width() // 2, y=self.game_area.get_height() // 2,
-                         collides_object=[lambda: pygame.Rect(self.paddle.x, self.paddle.y, self.paddle.paddle.width,
-                                                              self.paddle.paddle.height),
-                                          lambda: pygame.Rect(self.opponent_paddle.x, self.opponent_paddle.y,
+                         collides_object=[[lambda: pygame.Rect(self.paddle.x, self.paddle.y, self.paddle.paddle.width,
+                                                              self.paddle.paddle.height), False],
+                                          [lambda: pygame.Rect(self.opponent_paddle.x, self.opponent_paddle.y,
                                                               self.opponent_paddle.paddle.width,
-                                                              self.opponent_paddle.paddle.height)])
+                                                              self.opponent_paddle.paddle.height), True]])
         # -- Key manager (used for simultaneous and continuous events)
         self.key_list = self.key_list = {pygame.K_DOWN: False, pygame.K_UP: False}
 
@@ -124,6 +124,6 @@ class GameArea:
         self.paddle.display()
         self.opponent_paddle.display()
         self.ball.rotate()
-        self.ball.move()
+        self.ball.movement()
         self.ball.display()
         pygame.display.update()
