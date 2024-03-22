@@ -12,7 +12,7 @@ class Ball:
             collides_object = []
         self.screen = screen
         # -- Données de la balle
-        self.ball = None
+        self.hit_box = pygame.Rect(x, y, radius, radius)
         self.x = x
         self.y = y
         self.radius = radius
@@ -59,9 +59,9 @@ class Ball:
             return
 
         # Ball is out of its parent borders : create an event and quit now
-        if self.ball.left <= 0 or self.ball.right >= self.screen.get_width():
+        if self.hit_box.left <= 0 or self.hit_box.right >= self.screen.get_width():
             self.moving = False
-            on_left_side = self.ball.left <= 0
+            on_left_side = self.hit_box.left <= 0
             event = Event(Event.BALL_OUT, on_left_side)
             self.event.append(event)
             return
@@ -72,16 +72,16 @@ class Ball:
         to_top = self.direction > 180
 
         # Ball touched a border
-        if (to_top and self.ball.top <= 0) or (not to_top and self.ball.bottom > self.screen.get_height()):
+        if (to_top and self.hit_box.top <= 0) or (not to_top and self.hit_box.bottom > self.screen.get_height()):
             change_y = True
 
         # is the ball moving to the right of the screen?
         to_right = self.direction < 90 or self.direction > 270
 
         # Ball touched a paddle
-        for get_object_rect, on_right in self.collides_object:
+        for get_object_hit_box, on_right in self.collides_object:
             if to_right == on_right:
-                if self.does_collide_x_limited(get_object_rect(), on_right):
+                if self.does_collide_x_limited(get_object_hit_box(), on_right):
                     change_x = True
                     break
 
@@ -96,13 +96,13 @@ class Ball:
     does_collide_x_limited checks if the ball is colliding with another object, but ensure that they're not 
     already superposed (on the x plan)
     """
-    def does_collide_x_limited(self, obj, on_right):
-        test_y = obj.top < self.ball.centery < obj.bottom
+    def does_collide_x_limited(self, object_hit_box, on_right):
+        test_y = object_hit_box.top < self.hit_box.centery < object_hit_box.bottom
 
         if on_right:
-            test_x = obj.left < self.ball.right < obj.centerx
+            test_x = object_hit_box.left < self.hit_box.right < object_hit_box.centerx
         else:
-            test_x = obj.centerx < self.ball.left < obj.right
+            test_x = object_hit_box.centerx < self.hit_box.left < object_hit_box.right
 
         return test_x and test_y
 
@@ -161,16 +161,9 @@ class Ball:
         self.update_image()
         image_rect = pygame.Rect((self.x - self.image.get_width() // 2, self.y - self.image.get_height() // 2,
                                   self.image.get_width(), self.image.get_height()))
-        self.ball = pygame.Rect((self.x - self.radius // 2, self.y - self.radius // 2, self.radius, self.radius))
+        self.hit_box = pygame.Rect((self.x - self.radius // 2, self.y - self.radius // 2, self.radius, self.radius))
         self.screen.blit(self.image, image_rect)
 
-        direction = self.direction
-        if direction is None:
-            direction = self.orientation
-        pygame.draw.line(self.screen, (255, 255, 0), (self.x, self.y),
-
-                         (self.x + 50 * math.cos(math.radians(direction)),
-                          self.y + 50 * math.sin(math.radians(direction))))
 
     """
     read_event returns the event list and clear it

@@ -8,7 +8,7 @@ class Paddle:
         # -- Stockage des informations sur l'écran
         self.screen = screen
         # -- Données de la raquette
-        self.paddle = None
+        self.hit_box = None
         self.x = x
         self.y = y
         self.height = height
@@ -40,6 +40,7 @@ class Paddle:
             self.height = scaled_image.get_height()
         self.image = scaled_image
         self.width = self.image.get_width()
+        self.hit_box = pygame.Rect(self.x, self.y, self.width, self.height)
 
     # Déplacer la raquette vers le haut sans dépasser les bords de l'écran
     def move_up(self):
@@ -69,4 +70,4 @@ class Paddle:
 
     # Afficher la raquette à l'écran
     def display(self):
-        self.paddle = self.screen.blit(self.image, pygame.Rect(self.x, self.y, self.width, self.height))
+        self.hit_box = self.screen.blit(self.image, pygame.Rect(self.x, self.y, self.width, self.height))
