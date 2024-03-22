@@ -10,21 +10,19 @@ class Ball:
     def __init__(self, screen, image=img.DEFAULT_BALL, x=0, y=0, radius=30, orientation=0, collides_object=None):
         if collides_object is None:
             collides_object = []
-
-        # -- Store data
         self.screen = screen
-        # -- Ball data
+        # -- Données de la balle
         self.ball = None
         self.x = x
         self.y = y
         self.radius = radius
 
         self.moving = False
-        # -- Sprite relatives data
+        # -- Données relatives au sprite
         self.sprite = image
         self.orientation = orientation
         self.direction = None
-        # - will be automatically defined in "update_image"
+
         self.image = None
         self.update_image()
         self.speed = 1.75
@@ -32,6 +30,7 @@ class Ball:
 
         # event queue
         self.event = []
+
 
     """
     update_image uses the sprite to create an image of the ball with the current orientation,
@@ -164,10 +163,12 @@ class Ball:
                                   self.image.get_width(), self.image.get_height()))
         self.ball = pygame.Rect((self.x - self.radius // 2, self.y - self.radius // 2, self.radius, self.radius))
         self.screen.blit(self.image, image_rect)
+
         direction = self.direction
         if direction is None:
             direction = self.orientation
         pygame.draw.line(self.screen, (255, 255, 0), (self.x, self.y),
+
                          (self.x + 50 * math.cos(math.radians(direction)),
                           self.y + 50 * math.sin(math.radians(direction))))
 

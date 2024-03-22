@@ -5,34 +5,36 @@ from src.event import Event
 from src.paddle import Paddle
 
 
-# GameArea is the object which manage the game session.
+# GameArea est l'objet qui gère la session de jeu.
 class GameArea:
-    def __init__(self, screen, clock, FPS):
-        # -- Store given values
+    def __init__(self, screen, clock, FPS, scoremax):
+        # -- Stockage des valeurs données
         self.clock = clock
         self.FPS = FPS
         self.screen = screen
+        self.scoremax = scoremax
 
-        # -- Create subsurfaces
+        # -- Création des sous-surfaces
         self.border_rect = None
         self.border_area = None
 
         self.game_rect = None
         self.game_area = None
 
-        # -- Create components
+        # -- Création des composants
         self.paddle = None
         self.opponent_paddle = None
 
         self.ball = None
-        # -- Key manager (used for simultaneous and continuous events)
+        # -- Gestionnaire de clés (utilisé pour les événements simultanés et continus)
         self.key_list = None
 
         self.score = [0, 0]
         self.reset()
 
+    # Réinitialisation du jeu
     def reset(self):
-        # -- Create subsurfaces
+        # -- Création des sous-surfaces
         self.border_rect = pygame.Rect(self.screen.get_width() * 0.05, self.screen.get_height() * 0.05,
                                        self.screen.get_width() * 0.9,
                                        self.screen.get_height() * 0.9)
@@ -42,7 +44,7 @@ class GameArea:
                                      self.border_rect.height - 4)
         self.game_area = self.screen.subsurface(self.game_rect)
 
-        # -- Create components
+        # -- Création des composants
         self.paddle = Paddle(self.game_area)
         self.opponent_paddle = Paddle(self.game_area, x=self.game_area.get_width() - self.paddle.width, left_side=False)
 
@@ -52,10 +54,10 @@ class GameArea:
                                           [lambda: pygame.Rect(self.opponent_paddle.x, self.opponent_paddle.y,
                                                               self.opponent_paddle.paddle.width,
                                                               self.opponent_paddle.paddle.height), True]])
-        # -- Key manager (used for simultaneous and continuous events)
+     
         self.key_list = self.key_list = {pygame.K_DOWN: False, pygame.K_UP: False}
 
-    # Executes once the program.
+    # Exécution du jeu une fois
     def execute_once(self):
         self.input_management()
         self.display()
@@ -63,15 +65,19 @@ class GameArea:
         for event in self.read_event():
             self.handling_event(event)
 
+    # Gestion des événements du jeu
     def handling_event(self, event):
+        # Lorsque la balle sort à droite ou à gauche de l'écran, ajout d'un point au score du joueur correspondant
         if event.type == Event.BALL_OUT:
             i = 0
             if event.extra:
                 i = 1
             self.score[i] += 1
             self.reset()
+            if self.score[0] == self.scoremax or self.score[1] == self.scoremax:
+                pygame.quit()
 
-    # Fetch the event and use them
+    # Gestion des événements de l'utilisateur
     def input_management(self):
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
@@ -90,7 +96,7 @@ class GameArea:
                 self.key_list[pygame.K_UP] = False
                 self.key_list[pygame.K_DOWN] = False
 
-        # THIS USAGE IS ONLY FOR TEST. NOT A VALID "OPPONENT_PADDLE" BEHAVIOUR
+        # CETTE UTILISATION EST UNIQUEMENT POUR DES TESTS. CE N'EST PAS UN COMPORTEMENT DE "OPPONENT_PADDLE" VALIDE
         for e in self.key_list.keys():
             if e == pygame.K_UP and self.key_list[e]:
                 self.paddle.move_up()
@@ -110,12 +116,13 @@ class GameArea:
                 self.paddle.size_down()
                 self.opponent_paddle.size_up()
 
+    # Lecture des événements
     def read_event(self):
         events = []
         events += self.ball.read_event()
         return events
 
-    # Display it on screen
+    # Affichage du jeu à l'écran
     def display(self):
         self.screen.fill((0, 0, 0))
         self.border_area.fill((255, 255, 255))
