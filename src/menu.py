@@ -19,14 +19,28 @@ menutheme = pygame_menu.Theme(
 
 )
 
+scoremax = None
+
+class MenuHandler:
+    def __init__(self):
+        self.scoremax = ('5', 1)
+
+    def update_scoremax(self, item, indice):
+        self.scoremax = item[0][1]
+
+    def run(self):
+        print(self.scoremax)
+        start(self.scoremax)
 
 #fonction du menu
 def start_menu(width, height):
     pygame.init()
+    menuHandler = MenuHandler()
     screen = pygame.display.set_mode((width, height))
     menu = pygame_menu.Menu('Pong eternal', width, height,theme=menutheme)
     menu.add.selector('Mode :', [('1 joueur', 1), ('2 joueurs', 2)])
+    menu.add.selector('Score maximal :', [('5', 5), ('10', 10), ('20', 20)], onchange=menuHandler.update_scoremax)
     menu.add.selector('Graphisme :', [('faible', 1), ('moyen', 2), ('haut', 3), ('Photo realiste', 4)],default=1)
-    menu.add.button('Jouer', start)
+    menu.add.button('Jouer', menuHandler.run)
     menu.add.button('Quitter', pygame_menu.events.EXIT)
     menu.mainloop(screen)

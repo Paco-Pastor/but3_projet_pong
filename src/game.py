@@ -3,7 +3,7 @@ import pygame
 from src.GameArea import GameArea
 
 
-def start():
+def start(scoremax):
     pygame.init()
 
     clock = pygame.time.Clock()
@@ -13,7 +13,7 @@ def start():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Pong")
 
-    game = GameArea(screen, clock, FPS)
+    game = GameArea(screen, clock, FPS, scoremax)
 
     while True:
         game.execute_once()
