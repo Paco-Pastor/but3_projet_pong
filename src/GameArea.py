@@ -7,11 +7,12 @@ from src.paddle import Paddle
 
 # GameArea is the object which manage the game session.
 class GameArea:
-    def __init__(self, screen, clock, FPS):
+    def __init__(self, screen, clock, FPS, scoremax):
         # -- Store given values
         self.clock = clock
         self.FPS = FPS
         self.screen = screen
+        self.scoremax = scoremax
 
         # -- Create subsurfaces
         self.border_rect = None
@@ -70,6 +71,10 @@ class GameArea:
                 i = 1
             self.score[i] += 1
             self.reset()
+            if self.score[0] == self.scoremax or self.score[1] == self.scoremax:
+                pygame.quit()
+
+
 
     # Fetch the event and use them
     def input_management(self):
