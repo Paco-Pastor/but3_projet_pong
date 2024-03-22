@@ -1,7 +1,6 @@
 from unittest import TestCase, mock, main
 from src import menu
-
-
+import pygame
 class TestMenu(TestCase):
 
     @mock.patch("pygame.display")
@@ -24,3 +23,7 @@ class TestMenu(TestCase):
     def test_menu_too_small(self):
         with self.assertRaises(ValueError):
             menu.start_menu(1, 1)
+
+    def test_menu_negative_values(self):
+        with self.assertRaises(pygame.error):
+            menu.start_menu(-1, -1)
