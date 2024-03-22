@@ -33,10 +33,10 @@ class Paddle:
             used_image = self.sprite.default
         rotated_image = pygame.transform.rotate(used_image, (1 - self.left_side * 2) * 90)
         if factor_height:
-            scaled_image = pygame.transform.scale(rotated_image, (rotated_image.get_width(), int(self.height)))
+            scaled_image = pygame.transform.scale_by(rotated_image, self.height / rotated_image.get_height())
             self.width = scaled_image.get_width()
         else:
-            scaled_image = pygame.transform.scale(rotated_image, (int(self.width), rotated_image.get_height()))
+            scaled_image = pygame.transform.scale_by(rotated_image, self.width / rotated_image.get_width())
             self.height = scaled_image.get_height()
         self.image = scaled_image
         self.width = self.image.get_width()
@@ -69,5 +69,4 @@ class Paddle:
 
     # Afficher la raquette à l'écran
     def display(self):
-        self.screen.fill( (255,0,0),pygame.Rect(self.x, self.y, self.width, self.height))
         self.paddle = self.screen.blit(self.image, pygame.Rect(self.x, self.y, self.width, self.height))
