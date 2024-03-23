@@ -1,32 +1,31 @@
 import pygame
-import src.images as img
+import src.images as img  # Importation des images
 
-
-# Paddle implements a Pong's paddle usable with pygame
+# La classe Paddle implémente une raquette pour le jeu Pong utilisable avec Pygame
 class Paddle:
-    # Create the Paddle instance
+    # Création de l'instance de la raquette
     def __init__(self, screen, x=0, y=0, height=100, move_gap=2, image=img.DEFAULT_PADDLE_SKIN, left_side=True):
-        # -- Store screen information
+        # -- Stockage des informations sur l'écran
         self.screen = screen
-        # -- Paddle data
-        self.paddle = None
+        # -- Données de la raquette
+        self.hit_box = None
         self.x = x
         self.y = y
         self.height = height
         self.move_gap = move_gap
-        # - will be automatically defined in "update_image"
+        # - sera automatiquement défini dans "update_image"
         self.width = None
 
-        # -- Sprite relatives data
+        # -- Données relatives au sprite
         self.large = False
         self.sprite = image
         self.left_side = left_side
-        # - will be automatically defined in "update_image"
+        # - sera automatiquement défini dans "update_image"
         self.image = None
 
         self.update_image(True)
 
-    # Update the image to display : which image, its size, its rotation, ...
+    # Mettre à jour l'image à afficher : quelle image, sa taille, sa rotation, ...
     def update_image(self, factor_height=False):
         if self.large:
             used_image = self.sprite.large
@@ -41,16 +40,17 @@ class Paddle:
             self.height = scaled_image.get_height()
         self.image = scaled_image
         self.width = self.image.get_width()
+        self.hit_box = pygame.Rect(self.x, self.y, self.width, self.height)
 
-    # make Y position of the Paddle high without getting out of the borders
+    # Déplacer la raquette vers le haut sans dépasser les bords de l'écran
     def move_up(self):
         self.y = max(self.y - self.move_gap, self.screen.get_rect().top)
 
-    # make Y position of the Paddle higher without getting out of the borders
+    # Déplacer la raquette vers le bas sans dépasser les bords de l'écran
     def move_down(self):
         self.y = min(self.y + self.move_gap, self.screen.get_rect().bottom - self.height)
 
-    # update the paddle image and position into large paddle
+    # Mettre à jour l'image et la position de la raquette en une grande raquette
     def size_up(self):
         if not self.large:
             self.large = True
@@ -59,7 +59,7 @@ class Paddle:
             self.y -= self.height // 2
             self.y = max(self.screen.get_rect().top, min(self.y, self.screen.get_rect().bottom - self.height))
 
-    # update the paddle image and position into default paddle
+    # Mettre à jour l'image et la position de la raquette en une raquette par défaut
     def size_down(self):
         if self.large:
             self.large = False
@@ -68,6 +68,6 @@ class Paddle:
             self.y -= self.height // 2
             self.y = max(self.screen.get_rect().top, min(self.y, self.screen.get_rect().bottom - self.height))
 
-    # display the paddle on the screen
+    # Afficher la raquette à l'écran
     def display(self):
-        self.paddle = self.screen.blit(self.image, pygame.Rect(self.x, self.y, self.width, self.height))
+        self.hit_box = self.screen.blit(self.image, pygame.Rect(self.x, self.y, self.width, self.height))
