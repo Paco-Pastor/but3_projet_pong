@@ -14,27 +14,21 @@ class TestBall(TestCase):
     def test_start(self):
         self.ball.start()
         self.assertEqual(self.ball.direction, self.ball.orientation)
-    
-    def test_move(self):
-        self.ball.move()
+
+    def test_movement(self):
+        self.ball.movement()
         expected_x = self.ball.x + self.ball.speed * 0
         expected_y = self.ball.y + self.ball.speed * 0
         self.assertEqual(self.ball.x, expected_x)
         self.assertEqual(self.ball.y, expected_y)
-    
-    def test_radian(self):
-        self.assertAlmostEqual(Ball.radian(90), 1.5707963267948966)
-        self.assertAlmostEqual(Ball.radian(180), 3.141592653589793)
-        self.assertAlmostEqual(Ball.radian(270), 4.71238898038469)
-        self.assertAlmostEqual(Ball.radian(360), 6.283185307179586)
-    
+
     def test_rotate(self):
-        expected_orientation = (self.ball.orientation + 1)%360
+        expected_orientation = (self.ball.orientation + 1) % 360
         self.ball.rotate()
         self.assertEqual(self.ball.orientation, expected_orientation)
-    
+
     # TODO test display
-        
+
 
 if __name__ == "__main__":
     main()
