@@ -62,6 +62,5 @@ setUp() method in each TestCase class is executed at the beginning of each test.
 
 | Test Case | Expected Result           |
 | --------- | ------------------------- |
-|test_execute_once|Execute one correct loop of game, must return True to continue|
 |test_ball_out    |Verify handling_event method behavior on ball out event (return False)|
 |test_ball_in     |Verify handling_event method behavior on any event (return True)|

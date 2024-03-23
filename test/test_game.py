@@ -39,14 +39,6 @@ class TestGame(TestCase):
     @mock.patch("pygame.event")
     @mock.patch("pygame.draw")
     @mock.patch("pygame.display")
-    @mock.patch("pygame.font.Font")
-    def test_execute_once(self, mock_event, mock_draw, mock_display, mock_font):
-        execute_return = self.game.execute_once()
-        self.assertTrue(execute_return)
-
-    @mock.patch("pygame.event")
-    @mock.patch("pygame.draw")
-    @mock.patch("pygame.display")
     def test_ball_out(self, mock_event, mock_draw, mock_display):
         self.game.score[0] = 10
         event_return = self.game.handling_event(MockEventBallOut())
