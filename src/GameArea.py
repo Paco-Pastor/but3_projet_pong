@@ -163,19 +163,16 @@ class GameArea:
         self.screen.fill((0, 0, 0))
         self.border_area.fill((255, 255, 255))
         self.game_area.fill((0, 0, 0))
-<<<<<<< HEAD
-
+    
         self.draw_score_player1()
         self.draw_score_player2()
-        self.paddle.display()
-        self.opponent_paddle.display()
-=======
+
         x_position_line = self.game_area.get_width() // 4 * (4-self.player_count)
         pygame.draw.line(self.game_area, (255, 255, 255), (x_position_line, 0),
                          (x_position_line, self.game_area.get_height()))
         self.left_paddle.display()
         self.right_paddle.display()
->>>>>>> main
+
         self.ball.rotate()
         self.ball.movement()
         self.ball.display()
