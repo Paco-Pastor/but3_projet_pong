@@ -12,8 +12,6 @@ Pong game with tests
 _Make sure you have Python 3.11.6 installed_
 
 ```bash
-python3 -m venv venv # Create an empty python virtual environment
-source venv/bin/activate # Enable it
 pip3 install -r requirements.txt # Install dependencies
 python3 main.py # Launch game
 ```
