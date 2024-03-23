@@ -1,8 +1,9 @@
 import pygame_menu
-from src.game import start
+
+from src.GameArea import GameArea
 import pygame
 
-#création du menu
+# création du menu
 fontmenu = pygame_menu.font.FONT_8BIT
 
 imagemenu = pygame_menu.baseimage.BaseImage(
@@ -13,35 +14,39 @@ imagemenu = pygame_menu.baseimage.BaseImage(
 menutheme = pygame_menu.Theme(
     background_color=imagemenu,
     widget_font=fontmenu,
-    title_bar_style = pygame_menu.widgets.MENUBAR_STYLE_NONE,
+    title_bar_style=pygame_menu.widgets.MENUBAR_STYLE_NONE,
     title_font=fontmenu,
-    title_offset=[250,0]
+    title_offset=[250, 0]
 
 )
 
-scoremax = None
 
-# Création de la classe pour récupérer la valeur du score max choisi par le joueur
-class MenuHandler:
-    def __init__(self):
-        self.scoremax = ('5', 1)
+class Menu(pygame_menu.Menu):
+    def __init__(self, title, width, height, theme):
+        self.screen = pygame.display.set_mode((width, height))
+        super().__init__(title, width, height, theme=theme)
 
-    def update_scoremax(self, item, indice):
-        self.scoremax = item[0][1]
+        pygame.display.set_caption(title)
+        self.game_mode_selector = self.add.selector('Mode :', [('1 joueur', 1), ('2 joueurs', 2)])
+        self.score_max_selector = self.add.selector('Score maximal :', [('5', 5), ('10', 10), ('20', 20)])
+        self.add.button('Jouer', self.start_game)
+        self.add.button('Quitter', pygame_menu.events.EXIT)
+        self.mainloop(self.screen)
 
-    def run(self):
-        print(self.scoremax)
-        start(self.scoremax)
+    def start_game(self):
+        game_mode_value = self.game_mode_selector.get_value()[0][1]
+        score_max_value = self.score_max_selector.get_value()[0][1]
 
-#fonction du menu
+        clock = pygame.time.Clock()
+        FPS = 200
+
+        game = GameArea(self.screen, clock, FPS, score_max_value, game_mode_value)
+        running = True
+        while running:
+            running = game.execute_once()
+
+
+# fonction du menu
 def start_menu(width, height):
     pygame.init()
-    menuHandler = MenuHandler()
-    screen = pygame.display.set_mode((width, height))
-    menu = pygame_menu.Menu('Pong eternal', width, height,theme=menutheme)
-    menu.add.selector('Mode :', [('1 joueur', 1), ('2 joueurs', 2)])
-    menu.add.selector('Score maximal :', [('5', 5), ('10', 10), ('20', 20)], onchange=menuHandler.update_scoremax)
-    menu.add.selector('Graphisme :', [('faible', 1), ('moyen', 2), ('haut', 3), ('Photo realiste', 4)],default=1)
-    menu.add.button('Jouer', menuHandler.run)
-    menu.add.button('Quitter', pygame_menu.events.EXIT)
-    menu.mainloop(screen)
+    Menu('Pong eternal', width, height, menutheme)
