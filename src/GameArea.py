@@ -8,6 +8,7 @@ from src.paddle import Paddle
 
 # GameArea est l'objet qui gère la session de jeu.
 class GameArea:
+
     def __init__(self, screen, clock, FPS, score_max, player_count):
         # -- Stockage des valeurs données
         self.clock = clock
@@ -16,6 +17,7 @@ class GameArea:
         self.score_max = score_max
         self.player_count = player_count
         # -- Création des sous-surfaces
+
         self.border_rect = None
         self.border_area = None
 
@@ -161,12 +163,31 @@ class GameArea:
         self.screen.fill((0, 0, 0))
         self.border_area.fill((255, 255, 255))
         self.game_area.fill((0, 0, 0))
+    
+        self.draw_score_player1()
+        self.draw_score_player2()
+
         x_position_line = self.game_area.get_width() // 4 * (4-self.player_count)
         pygame.draw.line(self.game_area, (255, 255, 255), (x_position_line, 0),
                          (x_position_line, self.game_area.get_height()))
         self.left_paddle.display()
         self.right_paddle.display()
+
         self.ball.rotate()
         self.ball.movement()
         self.ball.display()
         pygame.display.update()
+    
+    def draw_score_player1(self):
+        font = pygame.font.Font(None, 32)
+        WHITE = (255, 255, 255)
+        score_text = font.render("Score: " + str(self.score[0]), True, WHITE)
+        self.screen.blit(score_text, (10, 5))
+        
+
+    def draw_score_player2(self):
+        font = pygame.font.Font(None, 32)
+        WHITE = (255, 255, 255)
+        score_text = font.render("Score: " + str(self.score[1]), True, WHITE)
+        self.screen.blit(score_text, (self.screen.get_width() - 100 , 5))
+
