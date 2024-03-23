@@ -1,6 +1,6 @@
 from unittest import TestCase, mock, main
-from src.GameArea import GameArea
-
+from src.game import Game
+from src.ball import Ball
 import pygame
 
 
@@ -16,6 +16,9 @@ class MockScreen(mock.Mock):
     def fill(mock):
         pass
 
+    def blit(mock1, mock2):
+        pass
+
 
 class MockEventBallOut(mock.Mock):
     type = "Ball Out"
@@ -26,31 +29,34 @@ class MockEvent(mock.Mock):
     type = "Mock Event"
 
 
-class TestGameArea(TestCase):
+class TestGame(TestCase):
 
     def setUp(self):
-        self.game_area = GameArea(MockScreen, pygame.time.Clock(), 60, 10, 1)
+        self.game = Game(MockScreen, pygame.time.Clock(), 60, 10, 1, False)
+        self.game.ball = mock.MagicMock(spec=Ball)
+        self.game.ball.hit_box = mock.MagicMock()
 
     @mock.patch("pygame.event")
     @mock.patch("pygame.draw")
     @mock.patch("pygame.display")
-    def test_execute_once(self, mock_event, mock_draw, mock_display):
-        execute_return = self.game_area.execute_once()
+    @mock.patch("pygame.font.Font")
+    def test_execute_once(self, mock_event, mock_draw, mock_display, mock_font):
+        execute_return = self.game.execute_once()
         self.assertTrue(execute_return)
 
     @mock.patch("pygame.event")
     @mock.patch("pygame.draw")
     @mock.patch("pygame.display")
     def test_ball_out(self, mock_event, mock_draw, mock_display):
-        self.game_area.score[0] = 10
-        event_return = self.game_area.handling_event(MockEventBallOut())
+        self.game.score[0] = 10
+        event_return = self.game.handling_event(MockEventBallOut())
         self.assertFalse(event_return)
 
     @mock.patch("pygame.event")
     @mock.patch("pygame.draw")
     @mock.patch("pygame.display")
     def test_ball_in(self, mock_event, mock_draw, mock_display):
-        event_return = self.game_area.handling_event(MockEvent())
+        event_return = self.game.handling_event(MockEvent())
         self.assertTrue(event_return)
 
 

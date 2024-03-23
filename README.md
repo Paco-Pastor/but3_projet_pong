@@ -60,7 +60,7 @@ setUp() method in each TestCase class is executed at the beginning of each test.
 | --------- | ------------------------- |
 |test_wrong_event|When an event does not exists, raise a TypeError exception|
 
-### GameArea tests
+### Game tests
 
 | Test Case | Expected Result           |
 | --------- | ------------------------- |

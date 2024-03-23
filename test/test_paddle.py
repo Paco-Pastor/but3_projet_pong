@@ -2,16 +2,16 @@ import pygame
 
 from unittest import TestCase, mock, main
 from src.paddle import Paddle
-from src.GameArea import GameArea
+from src.game import Game
 
-class MockGameArea(mock.Mock):
+class MockGame(mock.Mock):
     def get_rect():
         return pygame.Rect(0,0,100,100)
 
 class TestBall(TestCase):
     def setUp(self):
         self.MOVE_GAP = 3
-        self.paddle = Paddle(MockGameArea, move_gap=self.MOVE_GAP)
+        self.paddle = Paddle(MockGame, move_gap=self.MOVE_GAP)
     
     
     def test_move_up(self):

@@ -6,7 +6,7 @@ from src.event import Event
 from src.paddle import Paddle
 
 
-# GameArea est l'objet qui gère la session de jeu.
+# Game est l'objet qui gère la session de jeu.
 class Game:
 
     def __init__(self, screen, clock, FPS, score_max, player_count, bot_expert):
