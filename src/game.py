@@ -7,15 +7,16 @@ from src.paddle import Paddle
 
 
 # GameArea est l'objet qui gère la session de jeu.
-class GameArea:
+class Game:
 
-    def __init__(self, screen, clock, FPS, score_max, player_count):
+    def __init__(self, screen, clock, FPS, score_max, player_count, bot_expert):
         # -- Stockage des valeurs données
         self.clock = clock
         self.FPS = FPS
         self.screen = screen
         self.score_max = score_max
         self.player_count = player_count
+        self.bot_expert = bot_expert
         # -- Création des sous-surfaces
 
         self.border_rect = None
@@ -115,6 +116,13 @@ class GameArea:
                 self.key_list[pygame.K_z] = False
                 self.key_list[pygame.K_s] = False
 
+    """
+    one_player_action handle the paddle movements when there is only one player
+    the "bot" paddle has two levels
+        - Normal : fail 40% of the time
+        - Bot : Never fail + center itself when ball is far
+    """
+
     def one_player_action(self):
         for e in self.key_list.keys():
             if e == pygame.K_UP and self.key_list[e]:
@@ -123,8 +131,16 @@ class GameArea:
             elif e == pygame.K_DOWN and self.key_list[e]:
                 self.left_paddle.move_down()
 
+        # not bot expert mode : fail 40% of the time
+        if not self.bot_expert:
+            if pygame.time.get_ticks() % 5 < 2:
+                return
+
+        # allowed error for the bot
         approximation = self.right_paddle.hit_box.height // 2
-        distance = self.right_paddle.hit_box.centerx - self.ball.hit_box.centerx
+        # distance x between the right border and the ball
+        distance = self.game_area.get_width() - self.ball.hit_box.centerx
+        # if ball is too far, bot can't place its paddle using the ball y
         if distance < self.screen.get_width() // 4:
             approximation = approximation * 0.8
             if self.ball.hit_box.centery < self.right_paddle.hit_box.centery - approximation:
@@ -132,11 +148,19 @@ class GameArea:
 
             elif self.ball.hit_box.centery > self.right_paddle.hit_box.centery + approximation:
                 self.right_paddle.move_down()
-        else:
+
+
+        elif self.bot_expert:
+            # if bot expert mod is selected, when the ball is too far the bot adjust its paddle position to be in the
+            # middle in the screen
             if self.right_paddle.hit_box.centery < self.game_area.get_height() // 2 - approximation:
                 self.right_paddle.move_down()
             elif self.right_paddle.hit_box.centery > self.game_area.get_height() // 2 + approximation:
                 self.right_paddle.move_up()
+
+    """
+    two_players_action handles the paddle movement when there is two players
+    """
 
     def two_players_action(self):
         for e in self.key_list.keys():
@@ -163,13 +187,17 @@ class GameArea:
         self.screen.fill((0, 0, 0))
         self.border_area.fill((255, 255, 255))
         self.game_area.fill((0, 0, 0))
-    
+
         self.draw_score_player1()
         self.draw_score_player2()
 
-        x_position_line = self.game_area.get_width() // 4 * (4-self.player_count)
+        # position of the line
+        # if one player, 75% of the screen (ball detection zone of the bot)
+        # if two players, middle of the screen
+        x_position_line = self.game_area.get_width() // 4 * (4 - self.player_count)
         pygame.draw.line(self.game_area, (255, 255, 255), (x_position_line, 0),
                          (x_position_line, self.game_area.get_height()))
+
         self.left_paddle.display()
         self.right_paddle.display()
 
@@ -177,17 +205,20 @@ class GameArea:
         self.ball.movement()
         self.ball.display()
         pygame.display.update()
-    
+
     def draw_score_player1(self):
         font = pygame.font.Font(None, 32)
         WHITE = (255, 255, 255)
         score_text = font.render("Score: " + str(self.score[0]), True, WHITE)
         self.screen.blit(score_text, (10, 5))
-        
 
     def draw_score_player2(self):
         font = pygame.font.Font(None, 32)
         WHITE = (255, 255, 255)
         score_text = font.render("Score: " + str(self.score[1]), True, WHITE)
-        self.screen.blit(score_text, (self.screen.get_width() - 100 , 5))
+        self.screen.blit(score_text, (self.screen.get_width() - 100, 5))
 
+    def run(self):
+        running = True
+        while running:
+            running = self.execute_once()

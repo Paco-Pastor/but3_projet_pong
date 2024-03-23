@@ -26,18 +26,22 @@ class Paddle:
         self.update_image(True)
 
     # Mettre à jour l'image à afficher : quelle image, sa taille, sa rotation, ...
-    def update_image(self, factor_height=False):
+    def update_image(self, use_height=False):
         if self.large:
+            # will be used in Pong Eternal 2
             used_image = self.sprite.large
         else:
             used_image = self.sprite.default
+
         rotated_image = pygame.transform.rotate(used_image, (1 - self.left_side * 2) * 90)
-        if factor_height:
+        # using width to size the image by default. On initialisation, it's better to use its height
+        if use_height:
             scaled_image = pygame.transform.scale_by(rotated_image, self.height / rotated_image.get_height())
             self.width = scaled_image.get_width()
         else:
             scaled_image = pygame.transform.scale_by(rotated_image, self.width / rotated_image.get_width())
             self.height = scaled_image.get_height()
+
         self.image = scaled_image
         self.width = self.image.get_width()
         self.hit_box = pygame.Rect(self.x, self.y, self.width, self.height)
@@ -51,6 +55,7 @@ class Paddle:
         self.y = min(self.y + self.move_gap, self.screen.get_rect().bottom - self.height)
 
     # Mettre à jour l'image et la position de la raquette en une grande raquette
+    # unused : Pong Eternal 2
     def size_up(self):
         if not self.large:
             self.large = True
@@ -60,6 +65,7 @@ class Paddle:
             self.y = max(self.screen.get_rect().top, min(self.y, self.screen.get_rect().bottom - self.height))
 
     # Mettre à jour l'image et la position de la raquette en une raquette par défaut
+    # unused : Pong Eternal 2
     def size_down(self):
         if self.large:
             self.large = False

@@ -159,8 +159,11 @@ class Ball:
     def display(self):
         self.rotate()
         self.update_image()
+        # this rect is used to display the ball, but not as a hit box :
+        # the ball is rotating, and its rect has changing size, it can't be used as a hit box
         image_rect = pygame.Rect((self.x - self.image.get_width() // 2, self.y - self.image.get_height() // 2,
                                   self.image.get_width(), self.image.get_height()))
+        # this rect with fixed size is a valid hit box
         self.hit_box = pygame.Rect((self.x - self.radius // 2, self.y - self.radius // 2, self.radius, self.radius))
         self.screen.blit(self.image, image_rect)
 
