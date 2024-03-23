@@ -26,14 +26,15 @@ python3 -m unittest
 
 ## Test cases :
 
+setUp() method in each TestCase class is executed at the beginning of each test.
+
 ### Ball tests
 
 | Test Case | Expected Result           |
 | --------- | ------------------------- |
 |test_update_image|Updated image is not the same as old image|
 |test_start       |Ball direction is same as ball orientation|
-|test_move        |Check correct ball movement|
-|test_radian      |Basic test for radian calculation|
+|test_movement    |Check ball is moving|
 |test_rotate      |Correct ball rotation that changes orientation variable|
 
 ### Menu tests
@@ -52,3 +53,17 @@ python3 -m unittest
 |test_move_up_border  |Verify that up border is correctly blocking paddle|
 |test_move_down       |Test move down by 3 pixels|
 |test_move_down_border|Verify that down border is correctly blocking paddle|
+
+### Event tests
+
+| Test Case | Expected Result           |
+| --------- | ------------------------- |
+|test_wrong_event|When an event does not exists, raise a TypeError exception|
+
+### GameArea tests
+
+| Test Case | Expected Result           |
+| --------- | ------------------------- |
+|test_execute_once|Execute one correct loop of game, must return True to continue|
+|test_ball_out    |Verify handling_event method behavior on ball out event (return False)|
+|test_ball_in     |Verify handling_event method behavior on any event (return True)|
