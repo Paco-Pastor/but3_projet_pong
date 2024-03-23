@@ -15,6 +15,12 @@ _Make sure you have Python 3.11.6 installed_
 pip3 install -r requirements.txt # Install dependencies
 python3 main.py # Launch game
 ```
+## Gameplay :
+
+| Mode | touche haut joueur 1 | touche bas joueur 1 | touche haut joueur 2 | touche bas joueur 2 |
+|------|----------------------|---------------------|----------------------|---------------------|
+|Joueur contre joueur | `z`| `s` | `arrow up` |  `arrow down` |
+|Joueur contre robot  | `z`| `s` | ` |   |
 
 ## Launch tests :
 
