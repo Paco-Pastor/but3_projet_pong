@@ -27,8 +27,6 @@ class TestBall(TestCase):
         self.ball.rotate()
         self.assertEqual(self.ball.orientation, expected_orientation)
 
-    # TODO test display
-
 
 if __name__ == "__main__":
     main()
